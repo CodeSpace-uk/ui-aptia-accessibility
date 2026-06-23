@@ -87,12 +87,15 @@ const usefulLinks: Option[] = [
 function useAccessibilityControls() {
   const [scale, setScale] = useState(1);
   const [highContrast, setHighContrast] = useState(false);
+  const [light, setLight] = useState(false);
 
   useEffect(() => {
     const stored = Number(localStorage.getItem("a11y-scale"));
     const hc = localStorage.getItem("a11y-hc") === "true";
+    const lt = localStorage.getItem("a11y-light") === "true";
     if (stored) setScale(stored);
     if (hc) setHighContrast(true);
+    if (lt) setLight(true);
   }, []);
 
   useEffect(() => {
@@ -105,11 +108,16 @@ function useAccessibilityControls() {
     localStorage.setItem("a11y-hc", String(highContrast));
   }, [highContrast]);
 
+  useEffect(() => {
+    document.documentElement.classList.toggle("light", light);
+    localStorage.setItem("a11y-light", String(light));
+  }, [light]);
+
   const dec = () => setScale((s) => Math.max(0.85, Math.round((s - 0.1) * 100) / 100));
   const inc = () => setScale((s) => Math.min(1.5, Math.round((s + 0.1) * 100) / 100));
   const reset = () => setScale(1);
 
-  return { scale, highContrast, setHighContrast, dec, inc, reset };
+  return { scale, highContrast, setHighContrast, light, setLight, dec, inc, reset };
 }
 
 function AccessibilityToolbar() {
