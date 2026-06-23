@@ -2,6 +2,7 @@ import React from "react";
 import { AbsoluteFill, interpolate } from "remotion";
 import { COLORS } from "../theme";
 import { display, body, Kicker, StageCard, FlowArrow, useEnter } from "../ui";
+import { MaleChar, FemaleChar } from "../Characters";
 
 export interface OptionData {
   number: string;
@@ -35,6 +36,14 @@ export const OptionScene: React.FC<{ data: OptionData }> = ({ data }) => {
         <div style={{ fontFamily: body, fontSize: 22, color: COLORS.sub, marginTop: 6, opacity: head }}>
           {data.badge}
         </div>
+      </div>
+
+      <div style={{ position: "absolute", top: 60, right: 130 }}>
+        {Number(data.number) % 2 === 0 ? (
+          <FemaleChar delay={20} seed={Number(data.number) + 2} scale={0.62} />
+        ) : (
+          <MaleChar delay={20} seed={Number(data.number) + 1} scale={0.62} />
+        )}
       </div>
 
       <div style={{ display: "flex", alignItems: "stretch", marginTop: 90 }}>

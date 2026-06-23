@@ -2,6 +2,7 @@ import React from "react";
 import { AbsoluteFill, useCurrentFrame, interpolate } from "remotion";
 import { COLORS } from "../theme";
 import { display, body, Kicker, useEnter } from "../ui";
+import { MaleChar, FemaleChar } from "../Characters";
 
 export const Scene1: React.FC = () => {
   const frame = useCurrentFrame();
@@ -60,6 +61,10 @@ export const Scene1: React.FC = () => {
         }}
       >
         How member digital submissions flow from CAP into BEST — three options, explained.
+      </div>
+      <div style={{ position: "absolute", right: 150, bottom: 90, display: "flex", alignItems: "flex-end", gap: 30 }}>
+        <FemaleChar delay={26} wave seed={2} scale={1.05} />
+        <MaleChar delay={34} wave seed={5} scale={1.15} />
       </div>
     </AbsoluteFill>
   );
