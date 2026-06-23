@@ -171,6 +171,20 @@ html {
   }
 }
 
+/* Light theme variant (user toggle) — same Aptia colour scheme, inverted surfaces */
+:root.light {
+  --background: oklch(0.985 0.008 167.5);
+  --foreground: var(--brand-dark);
+  --card: oklch(1 0 0);
+  --card-foreground: var(--brand-dark);
+  --primary: var(--brand-green-strong);
+  --primary-foreground: oklch(1 0 0);
+  --muted-foreground: oklch(0.42 0.03 220);
+  --border: oklch(0.302 0.044 224.5 / 16%);
+  --ring: var(--brand-green-strong);
+  --brand-mint-soft: oklch(0.945 0.04 167.5);
+}
+
 /* High-contrast mode (user toggle) */
 :root.hc {
   --background: oklch(0 0 0);

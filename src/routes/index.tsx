@@ -87,12 +87,15 @@ const usefulLinks: Option[] = [
 function useAccessibilityControls() {
   const [scale, setScale] = useState(1);
   const [highContrast, setHighContrast] = useState(false);
+  const [light, setLight] = useState(false);
 
   useEffect(() => {
     const stored = Number(localStorage.getItem("a11y-scale"));
     const hc = localStorage.getItem("a11y-hc") === "true";
+    const lt = localStorage.getItem("a11y-light") === "true";
     if (stored) setScale(stored);
     if (hc) setHighContrast(true);
+    if (lt) setLight(true);
   }, []);
 
   useEffect(() => {
@@ -105,15 +108,20 @@ function useAccessibilityControls() {
     localStorage.setItem("a11y-hc", String(highContrast));
   }, [highContrast]);
 
+  useEffect(() => {
+    document.documentElement.classList.toggle("light", light);
+    localStorage.setItem("a11y-light", String(light));
+  }, [light]);
+
   const dec = () => setScale((s) => Math.max(0.85, Math.round((s - 0.1) * 100) / 100));
   const inc = () => setScale((s) => Math.min(1.5, Math.round((s + 0.1) * 100) / 100));
   const reset = () => setScale(1);
 
-  return { scale, highContrast, setHighContrast, dec, inc, reset };
+  return { scale, highContrast, setHighContrast, light, setLight, dec, inc, reset };
 }
 
 function AccessibilityToolbar() {
-  const { scale, highContrast, setHighContrast, dec, inc, reset } =
+  const { scale, highContrast, setHighContrast, light, setLight, dec, inc, reset } =
     useAccessibilityControls();
 
   return (
@@ -124,14 +132,14 @@ function AccessibilityToolbar() {
     >
       <span className="sr-only">Adjust text size</span>
       <div
-        className="flex items-center gap-1 rounded-full border border-white/25 bg-white/5 p-1"
+        className="flex items-center gap-1 rounded-full border border-brand-dark/20 bg-brand-dark/5 p-1"
         aria-label={`Text size ${Math.round(scale * 100)} percent`}
       >
         <button
           type="button"
           onClick={dec}
           aria-label="Decrease text size"
-          className="grid size-9 place-items-center rounded-full text-sm font-bold text-white hover:bg-white/15 focus-visible:bg-white/15"
+          className="grid size-9 place-items-center rounded-full text-sm font-bold text-brand-dark hover:bg-brand-dark/10 focus-visible:bg-brand-dark/10"
         >
           A<span aria-hidden="true">−</span>
         </button>
@@ -139,7 +147,7 @@ function AccessibilityToolbar() {
           type="button"
           onClick={reset}
           aria-label="Reset text size"
-          className="grid size-9 place-items-center rounded-full text-base font-bold text-white hover:bg-white/15 focus-visible:bg-white/15"
+          className="grid size-9 place-items-center rounded-full text-base font-bold text-brand-dark hover:bg-brand-dark/10 focus-visible:bg-brand-dark/10"
         >
           A
         </button>
@@ -147,21 +155,48 @@ function AccessibilityToolbar() {
           type="button"
           onClick={inc}
           aria-label="Increase text size"
-          className="grid size-9 place-items-center rounded-full text-lg font-bold text-white hover:bg-white/15 focus-visible:bg-white/15"
+          className="grid size-9 place-items-center rounded-full text-lg font-bold text-brand-dark hover:bg-brand-dark/10 focus-visible:bg-brand-dark/10"
         >
           A<span aria-hidden="true">+</span>
         </button>
       </div>
       <button
         type="button"
+        onClick={() => setLight(!light)}
+        aria-pressed={light}
+        className="inline-flex min-h-11 items-center gap-2 rounded-full border border-brand-dark/20 bg-brand-dark/5 px-4 text-sm font-semibold text-brand-dark hover:bg-brand-dark/10 focus-visible:bg-brand-dark/10"
+      >
+        <svg
+          aria-hidden="true"
+          viewBox="0 0 24 24"
+          className="size-5"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          {light ? (
+            <>
+              <circle cx="12" cy="12" r="4" />
+              <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" />
+            </>
+          ) : (
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+          )}
+        </svg>
+        Theme: {light ? "Light" : "Dark"}
+      </button>
+      <button
+        type="button"
         onClick={() => setHighContrast(!highContrast)}
         aria-pressed={highContrast}
-        className="inline-flex min-h-11 items-center gap-2 rounded-full border border-white/25 bg-white/5 px-4 text-sm font-semibold text-white hover:bg-white/15 focus-visible:bg-white/15"
+        className="inline-flex min-h-11 items-center gap-2 rounded-full border border-brand-dark/20 bg-brand-dark/5 px-4 text-sm font-semibold text-brand-dark hover:bg-brand-dark/10 focus-visible:bg-brand-dark/10"
       >
         <span
           aria-hidden="true"
-          className="grid size-5 place-items-center rounded-full border-2 border-white"
-          style={{ background: "linear-gradient(90deg,#fff 50%, transparent 50%)" }}
+          className="grid size-5 place-items-center rounded-full border-2 border-brand-dark"
+          style={{ background: "linear-gradient(90deg,currentColor 50%, transparent 50%)" }}
         />
         High contrast: {highContrast ? "On" : "Off"}
       </button>
