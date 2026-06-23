@@ -2,6 +2,7 @@ import React from "react";
 import { AbsoluteFill, interpolate } from "remotion";
 import { COLORS } from "../theme";
 import { display, body, Kicker, useEnter } from "../ui";
+import { MaleChar, FemaleChar } from "../Characters";
 
 const Row: React.FC<{ n: string; label: string; out: string; delay: number; accent: string }> = ({
   n,
@@ -76,6 +77,12 @@ export const Scene6: React.FC = () => {
         <Row n="1" label="Auto Accept" out="→ Open Case" delay={14} accent={COLORS.green} />
         <Row n="2" label="Auto Accept" out="→ Closed Case" delay={22} accent={COLORS.primarySoft} />
         <Row n="3" label="Pending Queue" out="→ Open or Closed Case" delay={30} accent={COLORS.amber} />
+      </div>
+      <div style={{ position: "absolute", left: 120, bottom: 60 }}>
+        <MaleChar delay={36} wave seed={3} scale={0.78} />
+      </div>
+      <div style={{ position: "absolute", right: 120, bottom: 60 }}>
+        <FemaleChar delay={42} wave flip seed={6} scale={0.78} />
       </div>
     </AbsoluteFill>
   );
