@@ -59,6 +59,11 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
+  --color-brand-dark: var(--brand-dark);
+  --color-brand-green: var(--brand-green);
+  --color-brand-green-strong: var(--brand-green-strong);
+  --color-brand-mint: var(--brand-mint);
+  --color-brand-mint-soft: var(--brand-mint-soft);
 }
 
 :root {
@@ -132,6 +137,54 @@
   --sidebar-ring: oklch(0.551 0.027 264.364);
 }
 
+/* Aptia brand tokens */
+:root {
+  --brand-dark: oklch(0.302 0.044 224.5);
+  --brand-dark-2: oklch(0.262 0.040 220);
+  --brand-green: oklch(0.714 0.171 155.3);
+  --brand-green-strong: oklch(0.62 0.16 156);
+  --brand-mint: oklch(0.932 0.036 172.8);
+  --brand-mint-soft: oklch(0.970 0.022 167.5);
+
+  --background: var(--brand-dark);
+  --foreground: oklch(1 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: var(--brand-dark);
+  --primary: var(--brand-green);
+  --primary-foreground: var(--brand-dark);
+  --muted-foreground: oklch(0.86 0.02 180);
+  --border: oklch(1 0 0 / 18%);
+  --ring: var(--brand-green);
+
+  /* user-controllable accessibility scale */
+  --font-scale: 1;
+}
+
+html {
+  font-size: calc(100% * var(--font-scale));
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+/* High-contrast mode (user toggle) */
+:root.hc {
+  --background: oklch(0 0 0);
+  --foreground: oklch(1 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0 0 0);
+  --primary: oklch(0.78 0.18 155);
+  --border: oklch(1 0 0 / 60%);
+}
+:root.hc a,
+:root.hc .card-link {
+  text-decoration: underline;
+}
+
 @layer base {
   * {
     border-color: var(--color-border);
@@ -140,5 +193,15 @@
   body {
     background-color: var(--color-background);
     color: var(--color-foreground);
+  }
+
+  /* Strong, visible focus indicator everywhere (accessibility) */
+  :focus-visible {
+    outline: 3px solid var(--brand-green);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+  :root.hc :focus-visible {
+    outline: 4px solid oklch(0.9 0.2 95);
   }
 }
